@@ -3,29 +3,49 @@ package com.parkit.parkingsystem.service;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
-public class FareCalculatorService {
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
-    public void calculateFare(Ticket ticket){
+public class FareCalculatorService {
+    public void calculateFare(Ticket ticket) {
+        calculateFare(ticket, false);
+    }
+    public void calculateFare(Ticket ticket, boolean discount){
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
             throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
         }
 
-        int inHour = ticket.getInTime().getHours();
-        int outHour = ticket.getOutTime().getHours();
+        double inMinutes = ticket.getInTime().getTime();
+        double outMinutes = ticket.getOutTime().getTime();
 
-        //TODO: Some tests are failing here. Need to check if this logic is correct
-        int duration = outHour - inHour;
-
+        double duration = (outMinutes - inMinutes)/(1000*60*60);
+        double isDiscount;
         switch (ticket.getParkingSpot().getParkingType()){
             case CAR: {
-                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
+                isDiscount = discount ? Fare.CAR_RATE_PER_HOUR * 0.95 : Fare.CAR_RATE_PER_HOUR;
                 break;
             }
             case BIKE: {
-                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
+                isDiscount = discount ? Fare.BIKE_RATE_PER_HOUR * 0.95 : Fare.BIKE_RATE_PER_HOUR;
                 break;
             }
             default: throw new IllegalArgumentException("Unkown Parking Type");
         }
+
+        double ticketPrice = duration * isDiscount;
+        ticketPrice = roundToTwoNumber(ticketPrice);
+
+        ticket.setPrice(ticketPrice);
+
+        //Looking for if time is 30 minutes or less
+        if(duration <=0.5) {
+            ticket.setPrice(0);
+        }
+    }
+    public double roundToTwoNumber (double doubleNumber){
+        BigDecimal bd = new BigDecimal(doubleNumber);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
