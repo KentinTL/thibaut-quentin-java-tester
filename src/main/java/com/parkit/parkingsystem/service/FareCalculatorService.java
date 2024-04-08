@@ -20,27 +20,29 @@ public class FareCalculatorService {
         double outMinutes = ticket.getOutTime().getTime();
 
         double duration = (outMinutes - inMinutes)/(1000*60*60);
-        double isDiscount;
-        switch (ticket.getParkingSpot().getParkingType()){
-            case CAR: {
-                isDiscount = discount ? Fare.CAR_RATE_PER_HOUR * 0.95 : Fare.CAR_RATE_PER_HOUR;
-                break;
-            }
-            case BIKE: {
-                isDiscount = discount ? Fare.BIKE_RATE_PER_HOUR * 0.95 : Fare.BIKE_RATE_PER_HOUR;
-                break;
-            }
-            default: throw new IllegalArgumentException("Unkown Parking Type");
-        }
-
-        double ticketPrice = duration * isDiscount;
-        ticketPrice = roundToTwoNumber(ticketPrice);
-
-        ticket.setPrice(ticketPrice);
 
         //Looking for if time is 30 minutes or less
         if(duration <=0.5) {
             ticket.setPrice(0);
+        } else {
+            double priceDiscount;
+
+            switch (ticket.getParkingSpot().getParkingType()){
+                case CAR: {
+                    priceDiscount = discount ? Fare.CAR_RATE_PER_HOUR * 0.95 : Fare.CAR_RATE_PER_HOUR;
+                    break;
+                }
+                case BIKE: {
+                    priceDiscount = discount ? Fare.BIKE_RATE_PER_HOUR * 0.95 : Fare.BIKE_RATE_PER_HOUR;
+                    break;
+                }
+                default: throw new IllegalArgumentException("Unkown Parking Type");
+            }
+
+            double ticketPrice = duration * priceDiscount;
+            ticketPrice = roundToTwoNumber(ticketPrice);
+
+            ticket.setPrice(ticketPrice);
         }
     }
     public double roundToTwoNumber (double doubleNumber){

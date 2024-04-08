@@ -35,6 +35,12 @@ public class ParkingService {
                 parkingSpot.setAvailable(false);
                 parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
 
+                int nbTickets = ticketDAO.getNbTicket(vehicleRegNumber);
+
+                if (nbTickets > 0) {
+                    System.out.println("Heureux de vous revoir ! En tant qu’utilisateur régulier de notre parking, vous allez obtenir une remise de 5%");
+                }
+
                 Date inTime = new Date();
                 Ticket ticket = new Ticket();
                 //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
@@ -91,7 +97,7 @@ public class ParkingService {
                 return ParkingType.BIKE;
             }
             default: {
-                System.out.println("Incorrect input provided");
+                System.out.println("Incorrect input provided please enter 1 for CAR or 2 for BIKE");
                 throw new IllegalArgumentException("Entered input is invalid");
             }
         }
@@ -103,7 +109,16 @@ public class ParkingService {
             Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
             Date outTime = new Date();
             ticket.setOutTime(outTime);
-            fareCalculatorService.calculateFare(ticket);
+
+            int nbTickets = ticketDAO.getNbTicket(vehicleRegNumber);
+
+            if (nbTickets>1) {
+                fareCalculatorService.calculateFare(ticket, true);
+                System.out.println("A bientot client régulier");
+            } else {
+                fareCalculatorService.calculateFare(ticket);
+            }
+
             if(ticketDAO.updateTicket(ticket)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);

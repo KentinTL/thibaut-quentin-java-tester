@@ -107,7 +107,7 @@ public class FareCalculatorServiceTest {
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
-        assertEquals (1.125 , ticket.getPrice());
+        assertEquals (1.13 , ticket.getPrice());
     }
 
     @Test
