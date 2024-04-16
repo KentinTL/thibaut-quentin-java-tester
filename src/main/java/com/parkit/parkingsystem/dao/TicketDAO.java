@@ -99,7 +99,6 @@ public class TicketDAO {
                 nbTickets = rs.getInt(1);
             }
         } catch (ClassNotFoundException | SQLException e) {
-            // Gérer les exceptions ici, par exemple, les enregistrer dans les logs
             e.printStackTrace();
         } finally {
             dataBaseConfig.closeResultSet(rs);
