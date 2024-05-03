@@ -49,9 +49,14 @@ To run the tests from maven, go to the folder that contains the pom.xml file and
 `mvn test`
 
 Then to run integration tests go to folder test and use the commands below on com.parkit.parkingsystem
+
 `mvn verify`
+
 That product the Jacoco report, you can open it into the folder target/site/jacoco/index.html
+
 next 
+
 `mvn surefire-report:report`
+
 That product the Surefire report, you can open it into the folder target/site/surefire-report.html
 
