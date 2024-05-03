@@ -48,7 +48,7 @@ public class TicketDAO {
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 ticket = new Ticket();
-                ParkingSpot parkingSpot = new ParkingSpot(rs.getInt(1), ParkingType.valueOf(rs.getString(6)),false);
+                ParkingSpot parkingSpot = new ParkingSpot(rs.getInt(1), ParkingType.valueOf(rs.getString(6)),rs.getBoolean(7));
                 ticket.setParkingSpot(parkingSpot);
                 ticket.setId(rs.getInt(2));
                 ticket.setVehicleRegNumber(vehicleRegNumber);
@@ -91,7 +91,7 @@ public class TicketDAO {
         int nbTickets = 0;
         try {
             con = dataBaseConfig.getConnection();
-            String query = "SELECT COUNT(*) FROM prod.ticket WHERE VEHICLE_REG_NUMBER = ?";
+            String query = "SELECT COUNT(*) FROM ticket WHERE VEHICLE_REG_NUMBER = ?";
             ps = con.prepareStatement(query);
             ps.setString(1, vehicleRegNumber);
             rs = ps.executeQuery();

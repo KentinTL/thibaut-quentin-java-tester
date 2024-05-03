@@ -4,7 +4,7 @@ use prod;
 
 create table parking(
 PARKING_NUMBER int PRIMARY KEY,
-AVAILABLE bool NOT NULL,
+AVAILABLE bool parkingPARKING_NUMBERAVAILABLETYPEparkingticketNOT NULL,
 TYPE varchar(10) NOT NULL
 );
 
@@ -38,7 +38,7 @@ TYPE varchar(10) NOT NULL
 create table ticket(
  ID int PRIMARY KEY AUTO_INCREMENT,
  PARKING_NUMBER int NOT NULL,
- VEHICLE_REG_NUMBER varchar(10) NOT NULL,
+ VEHICsys_configLE_REG_NUMBER varchar(10) NOT NULL,
  PRICE double,
  IN_TIME DATETIME NOT NULL,
  OUT_TIME DATETIME,

@@ -24,6 +24,7 @@ public class FareCalculatorService {
         //Looking for if time is 30 minutes or less
         if(duration <=0.5) {
             ticket.setPrice(0);
+            System.out.println("Moins de 30 minutes, c'est GRATUIT");
         } else {
             double priceDiscount;
 
