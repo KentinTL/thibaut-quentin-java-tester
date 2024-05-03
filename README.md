@@ -10,8 +10,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software and how to install them
 
-- Java 1.8
-- Maven 3.6.2
+- Java 21
+- Maven 3.9.6
 - Mysql 8.0.17
 
 ### Installing
@@ -47,3 +47,11 @@ The app has unit tests and integration tests written. More of these need to be a
 To run the tests from maven, go to the folder that contains the pom.xml file and execute the below command.
 
 `mvn test`
+
+Then to run integration tests go to folder test and use the commands below on com.parkit.parkingsystem
+`mvn verify`
+That product the Jacoco report, you can open it into the folder target/site/jacoco/index.html
+next 
+`mvn surefire-report:report`
+That product the Surefire report, you can open it into the folder target/site/surefire-report.html
+
